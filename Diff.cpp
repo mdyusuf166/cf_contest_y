@@ -1,6 +1,3 @@
-// 
-
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -10,30 +7,15 @@ void res() {
 
     vector<int> ans;
 
-    // 1st occurrence
-    for (int i = 1; i <= n; i++) {
-        ans.push_back(i);
-    }
+    for (int i = 1; i <= n; i++) ans.push_back(i);
+    for (int i = 1; i <= n; i++) ans.push_back(i);
 
-    // 2nd occurrence
-    for (int i = 1; i <= n; i++) {
-        ans.push_back(i);
-    }
-
-    // 3rd occurrence (shifted)
-    for (int i = 2; i <= n; i++) {
-        ans.push_back(i);
-    }
+    for (int i = 2; i <= n; i++) ans.push_back(i);
     ans.push_back(1);
 
-    // 4th occurrence
-    for (int i = 1; i <= n; i++) {
-        ans.push_back(i);
-    }
+    for (int i = 1; i <= n; i++) ans.push_back(i);
 
-    for (int x : ans) {
-        cout << x << " ";
-    }
+    for (int x: ans) cout << x << ' ';
     cout << '\n';
 }
 
