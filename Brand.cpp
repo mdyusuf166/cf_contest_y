@@ -1,46 +1,67 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void r() {
-    int n;
-    cin >> n;
+const int N = 500005, M = 1e9 + 7;
 
-    vector<int> a(n);
-    for (auto &x : a) cin >> x;
+int sp[N];
 
-    int ans = 0;
-
-    vector<vector<short>> dp(n + 1, vector<short>(n + 1, 0));
-
-    for (int i = n - 1; i >= 0; i--) {
-        for (int j = n - 1; j > i; j--) {
-
-            if (abs(a[i] - a[j]) == 1) {
-                dp[i][j] = dp[i + 1][j + 1] + 1;
-
-                int len = min((int)dp[i][j], j - i);
-
-                ans = max(ans, len);
-            }
-            else if (a[i] == a[j]) {
-                dp[i][j] = 0;
-            }
+void go() {
+    for (int i = 2; i < N; i++) {
+        if (!sp[i]) {
+            for (int j = i; j < N; j += i)
+                if (!sp[j]) sp[j] = i;
         }
     }
+}
 
-    cout << ans << '\n';
+int cal(int x) {
+    int r = 0;
+    while (x > 1) {
+        int p = sp[x];
+        r++;
+        while (x % p == 0) x /= p;
+    }
+    return r;
+}
+
+void solve() {
+    int n, x;
+    cin >> n >> x;
+
+    vector<int> c(N, 0);  
+
+    for (int i = 0; i < n; i++) {
+        int v;
+        cin >> v;
+        c[v]++;
+    }
+
+    long long ans = 1;
+
+    for (int i = 1; i < N; i++) {
+        if (!c[i]) continue;
+
+        int d = cal(i);
+
+        long long w = 1;
+
+        while (c[i]--) {
+            w = (w * (d + 1)) % M;
+        }
+
+        ans = (ans * w) % M;
+    }
+
+    cout << ans << "\n";
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    go();
 
     int t;
     cin >> t;
-
-    while (t--) {
-        r();
-    }
-
-    return 0;
+    while (t--) solve();
 }
