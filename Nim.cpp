@@ -21,6 +21,9 @@ void r() {
 
     if (nzc <= 1) {
         cout << 0 << '\n';
+    } else if (xs == 0) { 
+       
+        cout << 1 << '\n';
     } else {
         int ans = 0;
 
