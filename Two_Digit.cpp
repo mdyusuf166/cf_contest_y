@@ -1,41 +1,72 @@
 
-
-
 #include <bits/stdc++.h>
 using namespace std;
-void r(){
-  string a,b;
-  cin >> a >> b;
-  int n = a.length();
-  int m = b.length();
 
-  vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
-  dp[0][0] = 0;
-  for(int i = 0; i <= n; ++i){
-    for(int j = 0; j <= m; ++j){
-      if(dp[i][j] == -1) continue;
-      int s_a = 0;
-      for(int x = 1; i+x <= n; ++x){
-        s_a = (s_a + (a[i+x-1]-'0'))%10;
-        int s_b = 0;
-        for(int y = 1; j+y <= m; ++y){
-          s_b = (s_b + (b[j+y-1]-'0'))%10;
-          if(s_a == s_b){
-            dp[i+x][j+y] = max(dp[i+x][j+y], dp[i][j]+1);
-          }
-        }
-      }
+void r() {
+    string a, b;
+    cin >> a >> b;
+
+    int n = a.size(), m = b.size();
+    const int NEG = -1000000000;
+
+    vector<int> pa(n + 1, 0), pb(m + 1, 0);
+
+    for (int i = 1; i <= n; i++) {
+        pa[i] = (pa[i - 1] + a[i - 1] - '0') % 10;
     }
-  }
-  cout << dp[n][m] << "\n";
+
+    for (int i = 1; i <= m; i++) {
+        pb[i] = (pb[i - 1] + b[i - 1] - '0') % 10;
+    }
+
+    vector<array<int, 10>> be(m + 1);
+
+    for (int j = 0; j <= m; j++) {
+        for (int r = 0; r < 10; r++) be[j][r] = NEG;
+        be[j][0] = 0;
+    }
+
+    vector<int> dp(m + 1, NEG);
+
+    for (int i = 1; i <= n; i++) {
+        fill(dp.begin(), dp.end(), NEG);
+
+        for (int j = 1; j <= m; j++) {
+            int need = (pa[i] - pb[j] + 10) % 10;
+
+            if (be[j - 1][need] != NEG) {
+                dp[j] = be[j - 1][need] + 1;
+            }
+        }
+
+        array<int, 10> c;
+        for (int r = 0; r < 10; r++) c[r] = NEG;
+
+        for (int j = 1; j <= m; j++) {
+            if (dp[j] != NEG) {
+                int val = (pa[i] - pb[j] + 10) % 10;
+                c[val] = max(c[val], dp[j]);
+            }
+
+            for (int r = 0; r < 10; r++) {
+                be[j][r] = max(be[j][r], c[r]);
+            }
+        }
+    }
+
+    cout << (dp[m] < 0 ? -1 : dp[m]) << '\n';
 }
-int main(){
-  ios:: sync_with_stdio(false);
-  cin.tie(nullptr);
-  int t;
-  cin >> t;
-  while(t--){
-    r();
-  }
-  return 0;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t;
+    cin >> t;
+
+    while (t--) {
+        r();
+    }
+
+    return 0;
 }
