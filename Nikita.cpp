@@ -1,6 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+long long gcd(long long f,long long l){
+  while(l){
+    f %= l;
+    swap(f,l);
+  }
+  return f;
+}
+void res(){
+  
+}
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
